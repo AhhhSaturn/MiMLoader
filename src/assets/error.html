@@ -46,6 +46,10 @@
         <p>Oh no! Something went wrong launching the modded client.</p>
         <p id="error">Error</p>
     </div>
+    <script>
+        const error = document.getElementById('error');
+        error.innerText = window.location.search.split('err=')[1].replaceAll('%20', ' ');
+    </script>
     <img src="./error.png" alt="error" style="width: 100%; height: 100%; object-fit: contain;">
 </body>
 </html>

@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const htmlPatches = require('../patches/htmlPatches.js');
 const { modLoaderServer } = require('./modLoaderServer.js');
-const { BrowserWindow, app } = require('electron');
+
 
 const gamePath = process.cwd();
 const preloadMods = [];
@@ -275,33 +275,12 @@ const loadMod = async (file, miml) =>
 
 const displayError = async (err) =>
 {
-	console.error(err);
-	const loadWindow = () =>
+	await import('open').then( async (open) =>
 	{
-		const errorWindow = new BrowserWindow({
-			width: 1114,
-			height: 358,
-			frame: false,
-			transparent: true,
-			center: true,
-			alwaysOnTop: true,
-			resizable: false,
-		});
-		errorWindow.loadFile(path.join(__dirname, './error.html'));
-		errorWindow.webContents.on('did-finish-load', () =>
-		{
-			errorWindow.webContents.executeJavaScript(
-				`document.getElementById('error').innerHTML = '${err}'`
-			);
-		});
-		errorWindow.on('closed', () =>
-		{
-			errorWindow.destroy();
-			process.exit(0);
-		});
-	};
-	app.whenReady().then(loadWindow);
-	await new Promise(() => { });
+		await open.default('file://' + path.join(__dirname, 'error.html?err=' + err));
+	});
+	console.error(err);
+	process.exit(1);
 };
 
 module.exports = {

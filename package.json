@@ -9,6 +9,7 @@
     "dependencies": {
         "compressing": "^1.10.0",
         "express": "^4.18.2",
+        "open": "^10.0.4",
         "path": "^0.12.7",
         "socket.io": "^4.7.2"
     },
@@ -56,6 +57,7 @@
     "scripts": {
         "pack": "electron-builder --dir",
         "dist": "electron-builder -wl -p never",
-        "build": "npm run dist && node zipAssets.js"
+        "build": "npm run dist && node zipAssets.js",
+        "bun-build": "bun build src/main.js --compile --outfile build/bun/mimloader --target node"
     }
 }
